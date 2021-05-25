@@ -1,14 +1,12 @@
-from threading import Lock
-
 class Singleton(type):
-    _instances = {}
-
-    _lock: Lock = Lock()
-
+    def __init__(self, *args, **kwargs):
+        self.__instance = None
+        super().__init__(*args, **kwargs)
+     
     def __call__(self, *args, **kwargs):
-        with self._lock:
-            if self not in self._instances:
-                instance = super().__call__(*args, **kwargs)
-                self._instances[self] = instance
-
-        return self._instances[self]
+        if self.__instance is None:
+            self.__instance = super().__call__(*args, **kwargs)
+            return self.__instance
+        else:
+            return self.__instance
+        
